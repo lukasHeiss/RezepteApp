@@ -7,4 +7,5 @@ package fhooe.se.android.rezeptapp;
 public class RecipeExtendedData extends RecipeData {
     private String rezeptText;
 
+
 }
