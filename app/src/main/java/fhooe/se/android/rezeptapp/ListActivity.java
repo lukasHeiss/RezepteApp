@@ -1,7 +1,9 @@
 package fhooe.se.android.rezeptapp;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -40,8 +42,13 @@ public class ListActivity extends Activity implements View.OnClickListener, Adap
                             int _i,
                             long _l) {
         RecipeData data = (RecipeData) _adapterView.getAdapter().getItem(_i);
-        Toast.makeText(this, data.getRecipeName() + " has been selected", Toast.LENGTH_SHORT).show();
-        dataManager.saveRecipe(adapter, new RecipeExtendedData(-1, "Tomatensauce", R.drawable.img_placeholder));
+        //Toast.makeText(this, data.getId() + data.getRecipeName() + " has been selected", Toast.LENGTH_SHORT).show();
+
+        Log.i(TAG, "Set extra " + data.getId() + " " + data.getRecipeName());
+        Intent i = new Intent(getApplicationContext(), RecipeActivity.class);
+        i.putExtra("recipe", data.getId());
+        startActivity(i);
+        //dataManager.saveRecipe(adapter, new RecipeExtendedData(-1, "Tomatensauce", R.drawable.img_placeholder));
     }
 
     @Override

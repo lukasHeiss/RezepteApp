@@ -1,5 +1,6 @@
 package fhooe.se.android.rezeptapp.DAL;
 
+import android.util.Log;
 import android.widget.ArrayAdapter;
 
 import java.util.Collection;
@@ -22,8 +23,10 @@ public class DataManager implements IDataManager {
 
     private void InitDictionary() {
         recipes = new HashMap<Integer, RecipeExtendedData>();
-        recipes.put(0, new RecipeExtendedData(0, "Spaghetti Carbonara",  R.drawable.img_carbonara));
-        recipes.put(1, new RecipeExtendedData(1, "Pizza Teig", R.drawable.img_placeholder));
+        recipes.put(counter, new RecipeExtendedData(counter, "Spaghetti Carbonara",  R.drawable.img_carbonara));
+        counter++;
+        recipes.put(counter, new RecipeExtendedData(counter, "Pizza Teig", R.drawable.img_placeholder));
+        counter++;
     }
 
     @Override
@@ -33,9 +36,12 @@ public class DataManager implements IDataManager {
     }
 
     @Override
-    public RecipeExtendedData GetRecipeExtended(RecipeData recipe) {
-        return null;
+    public RecipeExtendedData GetRecipeExtended(int recipeId) {
+        if(recipes == null) InitDictionary();
+        Log.e("whatev", "GetRecipeExtended for " + recipeId);
+        return recipes.get(recipeId);
     }
+
 
     @Override
     public void saveRecipe(ArrayAdapter<RecipeExtendedData> adapter, RecipeExtendedData recipe) {

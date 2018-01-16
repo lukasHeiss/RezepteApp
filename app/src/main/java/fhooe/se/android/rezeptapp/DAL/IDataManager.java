@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface IDataManager {
     void FillAdapter(ArrayAdapter<RecipeExtendedData> adapter);
-    RecipeExtendedData GetRecipeExtended(RecipeData recipe);
+    RecipeExtendedData GetRecipeExtended(int recipeId);
 
 
     void saveRecipe(ArrayAdapter<RecipeExtendedData> adapter, RecipeExtendedData recipe);

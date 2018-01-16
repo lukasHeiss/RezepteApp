@@ -12,9 +12,9 @@ public class RecipeData {
     public RecipeData(){}
 
     protected RecipeData(int id, String _recipeName, int _icon){
-        id = id;
-        recipeName  = _recipeName;
-        icon = _icon;
+        this.id = id;
+        this.recipeName  = _recipeName;
+        this.icon = _icon;
     }
 
     protected void setId(int id){this.id = id;}
