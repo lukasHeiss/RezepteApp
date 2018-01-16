@@ -40,7 +40,7 @@ public class RecipeDataAdapter extends ArrayAdapter<RecipeData> {
 
             ImageView iv = null;
             iv=(ImageView) _view.findViewById(R.id.activity_list_element_icon);
-            iv.setImageResource(R.drawable.img_placeholder);
+            iv.setImageResource(data.getIcon());
         }
 
         return _view;

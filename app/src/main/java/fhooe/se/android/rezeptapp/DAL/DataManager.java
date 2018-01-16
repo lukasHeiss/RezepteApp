@@ -23,7 +23,7 @@ public class DataManager implements IDataManager {
     private void InitDictionary() {
         recipes = new HashMap<Integer, RecipeExtendedData>();
         recipes.put(0, new RecipeExtendedData(0, "Spaghetti Carbonara",  R.drawable.img_carbonara));
-        recipes.put(1, new RecipeExtendedData(1, "Pizza Teig", R.drawable.img_pizza_dough));
+        recipes.put(1, new RecipeExtendedData(1, "Pizza Teig", R.drawable.img_placeholder));
     }
 
     @Override
