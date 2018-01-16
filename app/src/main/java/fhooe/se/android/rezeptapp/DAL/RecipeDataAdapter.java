@@ -1,14 +1,14 @@
-package fhooe.se.android.rezeptapp;
+package fhooe.se.android.rezeptapp.DAL;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import fhooe.se.android.rezeptapp.R;
 
 /**
  * Created by Lukas on 11.01.18.
@@ -37,9 +37,10 @@ public class RecipeDataAdapter extends ArrayAdapter<RecipeData> {
             TextView tv = null;
             tv = (TextView)_view.findViewById(R.id.activity_list_element_textview_name);
             tv.setText(data.getRecipeName());
+
             ImageView iv = null;
             iv=(ImageView) _view.findViewById(R.id.activity_list_element_icon);
-            iv.setImageResource(data.getIcon());
+            iv.setImageResource(R.drawable.img_placeholder);
         }
 
         return _view;
