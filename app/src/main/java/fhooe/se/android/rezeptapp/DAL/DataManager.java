@@ -23,14 +23,11 @@ public class DataManager implements IDataManager {
 
     private void InitDictionary() {
         recipes = new HashMap<Integer, RecipeExtendedData>();
-        recipes.put(counter, new RecipeExtendedData(counter, "Spaghetti Carbonara",  R.drawable.img_carbonara));
-        counter++;
-        recipes.put(counter, new RecipeExtendedData(counter, "Pizza Teig", R.drawable.img_placeholder));
-        counter++;
+        InitData();
     }
 
     @Override
-    public void FillAdapter(ArrayAdapter<RecipeExtendedData> adapter) {
+    public void FillAdapter(ArrayAdapter<RecipeData> adapter) {
         if(recipes == null) InitDictionary();
         adapter.addAll(recipes.values());
     }
@@ -44,7 +41,7 @@ public class DataManager implements IDataManager {
 
 
     @Override
-    public void saveRecipe(ArrayAdapter<RecipeExtendedData> adapter, RecipeExtendedData recipe) {
+    public void saveRecipe(ArrayAdapter<RecipeData> adapter, RecipeExtendedData recipe) {
         if(recipes == null)
             InitDictionary();
 
@@ -54,6 +51,32 @@ public class DataManager implements IDataManager {
 
         recipes.put(recipe.getId(),recipe);
         adapter.add(recipe);
+    }
+
+
+
+
+
+
+
+
+    private void InitData() {
+        RecipeExtendedData recipe = new RecipeExtendedData(counter++, "Spaghetti Carbonara", R.drawable.img_carbonara);
+        recipe.AddInstruction("Erstmal die Spaghetti kochen");
+        recipe.AddInstruction("Währenddessen den Speck zusammen mit dem Knoblauch in etwas Öl anbraten.");
+        recipe.AddInstruction("Etwas Nudelwasser aufbehalten, die Nudeln zu Speck und Knoblauch in die Pfanne geben.\n" +
+                "Die Eier und den Käse drübergeben, immer wieder gut rühren. Falls es zu trocken wird, etwas Nudelwasser zuschießen.");
+
+        recipe.AddIngredient(new IngredientData(1, 10, "Knoblauch"));
+        recipe.AddIngredient(new IngredientData(100, 1, "Speck"));
+        recipe.AddIngredient(new IngredientData(2, 14, "Eier"));
+        recipes.put(recipe.getId(), recipe);
+
+        recipe = new RecipeExtendedData(counter++, "Einfache Tomatensauce", R.drawable.img_placeholder);
+        recipe.AddInstruction("Speck und Zwiebeln anbraten bis die Zwiebeln glasig sind, eventuell mit etwas Weißwein ablöschen.");
+        recipe.AddInstruction("Die Tomatenpampe beigeben, mit Paprikapulver, Salz & Pfeffer würzen. Ne Weile köcheln lassen.");
+        //recipe.AddIngredient(new IngredientData);
+        recipes.put(recipe.getId(), recipe);
     }
 
 }
