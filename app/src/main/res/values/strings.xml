@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">RezeptApp</string>
-    <string name="title_activity_recipy">RecipyActivity</string>
+    <string name="title_activity_recipy">Rezept</string>
+
+    <string name="gram">g</string>
+    <string name="kilo">kg</string>
 </resources>
