@@ -66,6 +66,10 @@ public class DataManager implements IDataManager {
         recipe.AddInstruction("Währenddessen den Speck zusammen mit dem Knoblauch in etwas Öl anbraten.");
         recipe.AddInstruction("Etwas Nudelwasser aufbehalten, die Nudeln zu Speck und Knoblauch in die Pfanne geben.\n" +
                 "Die Eier und den Käse drübergeben, immer wieder gut rühren. Falls es zu trocken wird, etwas Nudelwasser zuschießen.");
+        recipe.setTimeCooking(20);
+        recipe.setTimePreparation(5);
+        recipe.setDifficulty(R.string.diff_beginner);
+        recipe.setBasePortions(2);
 
         recipe.AddIngredient(new IngredientData(1, 10, "Knoblauch"));
         recipe.AddIngredient(new IngredientData(100, 1, "Speck"));

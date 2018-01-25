@@ -7,6 +7,10 @@ import java.util.Vector;
  */
 
 public class RecipeExtendedData extends RecipeData {
+    private int timePreparation = -1;
+    private int timeCooking = -1;
+    private int difficulty = -1;
+    private int basePortions = 2;
     private Vector<String> instructionList;
     private Vector<IngredientData> ingredients;
 
@@ -20,6 +24,14 @@ public class RecipeExtendedData extends RecipeData {
     public void AddInstruction (String instruction) {instructionList.add(instruction);}
     public Vector<IngredientData> getIngredients() {return ingredients;}
     public void AddIngredient (IngredientData ingredient){ingredients.add(ingredient);}
+    public int getTimePreparation(){return timePreparation;}
+    public void setTimePreparation(int time){timePreparation=time;}
+    public int getTimeCooking(){return timeCooking;}
+    public void setTimeCooking(int time){timeCooking=time;}
+    public int getDifficulty(){return difficulty;}
+    public void setDifficulty(int diff){this.difficulty=diff;}
+    public int getBasePortions(){return basePortions;}
+    public void setBasePortions(int portions){this.basePortions=portions;}
 
 
 }

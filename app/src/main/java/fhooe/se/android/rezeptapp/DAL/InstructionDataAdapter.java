@@ -33,7 +33,7 @@ public class InstructionDataAdapter extends ArrayAdapter<String>  {
         final String data = getItem(_pos);
         if (data != null){
             TextView tv = (TextView)_view.findViewById(R.id.activity_recipe_instructionelement_number);
-            tv.setText(String.valueOf(_pos));
+            tv.setText(String.valueOf(_pos + 1));
 
             TextView tv2 = (TextView)_view.findViewById(R.id.activity_recipe_instructionelement_text);
             tv2.setText(data);
