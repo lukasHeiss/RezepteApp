@@ -28,8 +28,16 @@
         android:textSize="20dp"
         android:gravity="center"/>
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/activity_recipe_metaList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dip"
+        />
 
-    <ListView
+    <LinearLayout
+        android:orientation="vertical"
         android:id="@+id/activity_recipe_ingredientList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -37,11 +45,13 @@
         android:background="#0f0"/>
 
 
-    <ListView
+    <LinearLayout
+        android:orientation="vertical"
         android:id="@+id/activity_recipe_instructionList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dip"
         android:background="#0f0"/>
+
     </LinearLayout>
 </ScrollView>
