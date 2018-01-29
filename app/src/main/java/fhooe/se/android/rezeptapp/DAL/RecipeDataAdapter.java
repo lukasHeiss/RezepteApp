@@ -16,6 +16,9 @@ import fhooe.se.android.rezeptapp.RecipeActivity;
 
 /**
  * Created by Lukas on 11.01.18.
+ * Adapter for basic recipes.
+ * Possibly change underlying data type to RecipeData, so no more Data-Access classes are used as Domain classes.
+ * This would break some stuff in DataManager, so I'm not touching anything.
  */
 
 public class RecipeDataAdapter extends ArrayAdapter<Recipe>  {

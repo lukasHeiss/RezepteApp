@@ -11,6 +11,7 @@ import fhooe.se.android.rezeptapp.R;
 
 /**
  * Created by Tom on 24.01.2018.
+ * Adapter for Instructions. Only saves strings, since nothing more should be necessary.
  */
 
 public class InstructionDataAdapter extends ArrayAdapter<String>  {

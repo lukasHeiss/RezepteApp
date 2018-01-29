@@ -2,6 +2,7 @@ package fhooe.se.android.rezeptapp.DAL;
 
 /**
  * Created by Tom on 24.01.2018.
+ * Domain class for Ingredients. saves the amount, the used unit and the name of the ingredient.
  */
 
 public class IngredientData {

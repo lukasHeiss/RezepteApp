@@ -13,6 +13,7 @@ import fhooe.se.android.rezeptapp.R;
 
 /**
  * Created by Tom on 24.01.2018.
+ * Adapter for Ingredients.
  */
 
 public class IngredientDataAdapter extends ArrayAdapter<IngredientData> {

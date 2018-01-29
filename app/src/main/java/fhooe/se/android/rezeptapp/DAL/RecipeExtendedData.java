@@ -7,6 +7,7 @@ import java.util.Vector;
 
 /**
  * Created by Lukas on 11.01.18.
+ * Domain class for an entire recipe.
  */
 
 public class RecipeExtendedData extends RecipeData {

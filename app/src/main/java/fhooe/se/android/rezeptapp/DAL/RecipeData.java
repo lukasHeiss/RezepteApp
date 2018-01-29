@@ -2,6 +2,8 @@ package fhooe.se.android.rezeptapp.DAL;
 
 /**
  * Created by Lukas on 11.01.18.
+ * Domain Class for basic recipes. Currently not in use, since the Data Access class Recipe is used most of the time.
+ * Maybe change that around, if there is time.
  */
 
 public class RecipeData {

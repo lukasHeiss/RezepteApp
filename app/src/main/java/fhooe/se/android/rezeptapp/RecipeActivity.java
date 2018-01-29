@@ -35,9 +35,12 @@ public class RecipeActivity extends Activity implements RecipeDataCallBack{
 
         int recipeId = getIntent().getIntExtra("recipe", -1);
         Log.e(TAG, "recipe #" + recipeId + " selected");
+
+        //get extended recipe. the callback function is called as soon as the recipe has been loaded.
         manager.GetRecipeExtended(recipeId, this);
     }
 
+    //helper function to create the Meta Views (Time, portions etc), to reduce double code.
     private View getMetaElementView(String data, int image){
         LayoutInflater inflater = (LayoutInflater)
                 this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -53,15 +56,16 @@ public class RecipeActivity extends Activity implements RecipeDataCallBack{
 
     @Override
     public void dataLoaded(RecipeExtendedData recipe) {
-        Log.e("Whatev", "Callback called!");
         data = recipe;
         if (recipe != null){
+            //add basic information
             TextView tv = (TextView) findViewById(R.id.activity_recipe_text_recipename);
             tv.setText(data.getRecipeName());
 
             ImageView iv = (ImageView) findViewById(R.id.activity_recipe_image);
             iv.setImageResource(data.getIcon());
 
+            //add meta elements
             LinearLayout metaElements = (LinearLayout) findViewById(R.id.activity_recipe_metaList);
             if(data.getTimeCooking() != -1)
                 metaElements.addView(getMetaElementView(String.valueOf(data.getTimeCooking()) + " m " + getResources().getString(R.string.cookTime), R.drawable.ic_clock));
@@ -72,6 +76,7 @@ public class RecipeActivity extends Activity implements RecipeDataCallBack{
             metaElements.addView(getMetaElementView(data.getBasePortions()+"", R.drawable.ic_cutlery));
 
 
+            //add the List of instructions
             LinearLayout instructions = (LinearLayout) findViewById(R.id.activity_recipe_instructionList);
             ArrayAdapter instructionAdapter = new InstructionDataAdapter(this, null);
             instructionAdapter.addAll(data.getInstructionList());
@@ -79,6 +84,7 @@ public class RecipeActivity extends Activity implements RecipeDataCallBack{
                 instructions.addView(instructionAdapter.getView(i, null, instructions));
             }
 
+            //add the List of ingredients
             LinearLayout ingredients = (LinearLayout) findViewById(R.id.activity_recipe_ingredientList);
             ArrayAdapter ingredientsAdapter = new IngredientDataAdapter(this, null);
             ingredientsAdapter.addAll(data.getIngredientList());
@@ -87,33 +93,4 @@ public class RecipeActivity extends Activity implements RecipeDataCallBack{
             }
         }
     }
-
-
-    public static class ListUtils{
-        public static void setDynamicHeight(ListView listView, Context context) {
-
-            ListAdapter listAdapter = listView.getAdapter();
-            if(listAdapter == null)
-                return;
-            int height= 0;
-            int desiredWidth= View.MeasureSpec.makeMeasureSpec(screenWidth(context), View.MeasureSpec.UNSPECIFIED);
-            for(int i=0; i< listAdapter.getCount(); i++){
-                TextView listItem = (TextView) listAdapter.getView(i, null, listView);
-                listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
-                height += listItem.getMeasuredHeight();
-            }
-            ViewGroup.LayoutParams params = listView.getLayoutParams();
-            params.height = height + (listView.getDividerHeight() * listAdapter.getCount() - 1);
-            listView.setLayoutParams(params);
-            listView.requestLayout();
-        }
-
-        private static int screenWidth(Context context) {
-            WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-            Point size = new Point();
-            wm.getDefaultDisplay().getSize(size);
-            return size.x;
-        }
-    }
-
 }

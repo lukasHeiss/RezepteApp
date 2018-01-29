@@ -131,6 +131,7 @@ public class DataManager extends Application implements IDataManager  {
 
                 List<Instruction> instrList = new ArrayList<Instruction>();
                 List<Ingredient> ingrList = new ArrayList<Ingredient>();
+
                 int i = 0;
                 for ( IngredientData ingr : extendedRecipe.getIngredientList())
                     ingrList.add(new Ingredient((int) newId, i++, ingr));
