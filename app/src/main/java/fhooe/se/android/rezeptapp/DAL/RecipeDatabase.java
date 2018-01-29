@@ -11,7 +11,8 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
 
 /**
  * Created by Tom on 28.01.2018.
- * purely DAL-intern stuff Classes are package-private and should not be used outside of data access.
+ * purely DAL-intern stuff.
+ * Classes are package-private and should not be used outside of data access.
  */
 
 @Database(entities = {Recipe.class, Instruction.class, Ingredient.class}, version = 1)
@@ -44,7 +45,6 @@ class Instruction{
         this.id = id;
         this.instruction = instruction;
     }
-
     protected int recipeId;
     protected int id;
 

@@ -5,6 +5,7 @@ import android.app.Application;
 import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -109,7 +110,7 @@ public class DataManager extends Application implements IDataManager  {
         final RecipeDao dao = _db.recipeDao();
 
         final Recipe recipe = new Recipe();
-        //recipe.id = extendedRecipe.getId();
+        recipe.id = extendedRecipe.getId();
         recipe.recipeName = extendedRecipe.getRecipeName();
         recipe.icon = extendedRecipe.getIcon();
         recipe.basePortions = extendedRecipe.getBasePortions();
@@ -120,14 +121,15 @@ public class DataManager extends Application implements IDataManager  {
         new AsyncTask<Void, Void, Recipe>() {
             @Override
             protected Recipe doInBackground(Void... params) {
-                long newId = dao.InsertRecipe(recipe);
-                Log.e("whatev", "Newly set Id:" + newId);
-                if(newId == 0) {
+                long newId;
+                try {
+                    newId = dao.InsertRecipe(recipe);
+                    recipe.id = (int)newId;
+                }catch (SQLiteException e){
+                    //double keys. try update instead.
                     dao.UpdateRecipe(recipe);
                     newId = recipe.id;
                 }
-                else
-                    recipe.id = (int)newId;
 
                 List<Instruction> instrList = new ArrayList<Instruction>();
                 List<Ingredient> ingrList = new ArrayList<Ingredient>();
@@ -148,16 +150,11 @@ public class DataManager extends Application implements IDataManager  {
             protected void onPostExecute(Recipe recipe){
                 if(adapter != null){
                     adapter.add(recipe);
-                    adapter.notifyDataSetChanged();
+                    //adapter.notifyDataSetChanged();
                 }
                 else Log.e("whatev", "adapter null");
             }
-
         }.execute();
-
-
-        if(adapter != null)
-            adapter.add(recipe);
     }
 
 
