@@ -1,7 +1,6 @@
 package fhooe.se.android.rezeptapp.DAL;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Application;
 import android.arch.persistence.room.Room;
 import android.content.Context;
@@ -9,15 +8,11 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.widget.Adapter;
 import android.widget.ArrayAdapter;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import fhooe.se.android.rezeptapp.ListActivity;
 import fhooe.se.android.rezeptapp.R;
 import fhooe.se.android.rezeptapp.RecipeDataCallBack;
 
@@ -88,8 +83,14 @@ public class DataManager extends Application implements IDataManager  {
             @Override
             protected RecipeExtendedData doInBackground(Void... params) {
                 Log.e("whatev", "getExt: instr: "+ dao.GetInstructions(recipeId).size());
+                List<String> instrList = new ArrayList<String>();
+                List<IngredientData> ingrList = new ArrayList<IngredientData>();
+                for (Instruction instr:dao.GetInstructions(recipeId))
+                    instrList.add(instr.instruction);
+                for(Ingredient ingr : dao.GetIngredients(recipeId))
+                    ingrList.add(new IngredientData(ingr));
                 RecipeExtendedData recipe = new RecipeExtendedData(dao.GetRecipeById(recipeId),
-                        dao.GetInstructions(recipeId), dao.GetIngredients(recipeId));
+                        instrList, ingrList);
                 return recipe;
 
             }
@@ -122,21 +123,23 @@ public class DataManager extends Application implements IDataManager  {
                 long newId = dao.InsertRecipe(recipe);
                 Log.e("whatev", "Newly set Id:" + newId);
                 if(newId == 0) {
-
                     dao.UpdateRecipe(recipe);
                     newId = recipe.id;
                 }
-                Log.e("whatev", "before: ingr:" + extendedRecipe.getIngredients().size() + "instr:" + extendedRecipe.getInstructionList().size());
-                Log.e("whatev", "getExt: instr: "+ dao.GetInstructions((int)newId).size());
-                for ( Ingredient ingr : extendedRecipe.getIngredients())
-                    ingr.recipeId = (int) newId;
-                dao.InsertIngredients(extendedRecipe.getIngredients());
+                else
+                    recipe.id = (int)newId;
 
-                for(Instruction instr : extendedRecipe.getInstructionList())
-                    instr.recipeId = (int) newId;
-                dao.InsertInstructions(extendedRecipe.getInstructionList());
-                Log.e("whatev", "after: ingr:" + extendedRecipe.getIngredients().size() + "instr:" + extendedRecipe.getInstructionList().size());
-                Log.e("whatev", "getExt: instr: "+ dao.GetInstructions((int)newId).size());
+                List<Instruction> instrList = new ArrayList<Instruction>();
+                List<Ingredient> ingrList = new ArrayList<Ingredient>();
+                int i = 0;
+                for ( IngredientData ingr : extendedRecipe.getIngredientList())
+                    ingrList.add(new Ingredient((int) newId, i++, ingr));
+                dao.InsertIngredients(ingrList);
+
+                i=0;
+                for(String instr : extendedRecipe.getInstructionList())
+                    instrList.add(new Instruction((int) newId, i++, instr));
+                dao.InsertInstructions(instrList);
                 return recipe;
             }
 
@@ -187,30 +190,30 @@ public class DataManager extends Application implements IDataManager  {
         updating = true;
 
         RecipeExtendedData recipe = new RecipeExtendedData("Einfache Tomatensauce", R.drawable.img_placeholder);
-        recipe.AddInstruction(new Instruction(0, 0, "Speck und Zwiebeln anbraten bis die Zwiebeln glasig sind, eventuell mit etwas Weißwein ablöschen."));
-        recipe.AddInstruction(new Instruction(0, 1, "Die Tomatenpampe beigeben, mit Paprikapulver, Salz & Pfeffer würzen. Ne Weile köcheln lassen."));
+        recipe.AddInstruction("Speck und Zwiebeln anbraten bis die Zwiebeln glasig sind, eventuell mit etwas Weißwein ablöschen.");
+        recipe.AddInstruction( "Die Tomatenpampe beigeben, mit Paprikapulver, Salz & Pfeffer würzen. Ne Weile köcheln lassen.");
         //recipe.AddIngredient(new IngredientData);
         saveRecipe(null, recipe);
 
          recipe = new RecipeExtendedData("Spaghetti Carbonara", R.drawable.img_carbonara);
-        recipe.AddInstruction(new Instruction(0, 0,"Erstmal die Spaghetti kochen"));
-        recipe.AddInstruction(new Instruction(0, 1, "Währenddessen den Speck zusammen mit dem Knoblauch in etwas Öl anbraten."));
-        recipe.AddInstruction(new Instruction(0, 2, "Etwas Nudelwasser aufbehalten, die Nudeln zu Speck und Knoblauch in die Pfanne geben.\n" +
-                "Die Eier und den Käse drübergeben, immer wieder gut rühren. Falls es zu trocken wird, etwas Nudelwasser zuschießen."));
+        recipe.AddInstruction("Erstmal die Spaghetti kochen");
+        recipe.AddInstruction( "Währenddessen den Speck zusammen mit dem Knoblauch in etwas Öl anbraten.");
+        recipe.AddInstruction( "Etwas Nudelwasser aufbehalten, die Nudeln zu Speck und Knoblauch in die Pfanne geben.\n" +
+                "Die Eier und den Käse drübergeben, immer wieder gut rühren. Falls es zu trocken wird, etwas Nudelwasser zuschießen.");
         recipe.setTimeCooking(20);
         recipe.setTimePreparation(5);
         recipe.setDifficulty(R.string.diff_beginner);
         recipe.setBasePortions(2);
 
 
-        recipe.AddIngredient(new Ingredient(0, 0, 1, "", "Knoblauch"));
-        recipe.AddIngredient(new Ingredient(0, 1, 100, "g", "Speck"));
-        recipe.AddIngredient(new Ingredient(0, 2, 2,"", "Eier"));
+        recipe.AddIngredient(new IngredientData(1, "", "Knoblauch"));
+        recipe.AddIngredient(new IngredientData(100, "g", "Speck"));
+        recipe.AddIngredient(new IngredientData(2,"", "Eier"));
         saveRecipe(null, recipe);
 
         updating = false;
 
-        p.edit().putBoolean("PREFERENCE_FIRST_RUN", false).commit();
+        p.edit().putBoolean("PREFERENCE_FIRST_RUN", false).apply();
     }
 
 }

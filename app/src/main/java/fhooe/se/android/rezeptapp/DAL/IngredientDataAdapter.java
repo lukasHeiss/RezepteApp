@@ -15,7 +15,7 @@ import fhooe.se.android.rezeptapp.R;
  * Created by Tom on 24.01.2018.
  */
 
-public class IngredientDataAdapter extends ArrayAdapter<Ingredient> {
+public class IngredientDataAdapter extends ArrayAdapter<IngredientData> {
     private View.OnClickListener mListener;
 
     public IngredientDataAdapter(Context _c, View.OnClickListener _listener) {
@@ -32,14 +32,14 @@ public class IngredientDataAdapter extends ArrayAdapter<Ingredient> {
                     getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             _view = inflater.inflate(R.layout.activity_recipe_ingredientelement, null);
         }
-        final Ingredient data = getItem(_pos);
+        final IngredientData data = getItem(_pos);
         if (data != null){
             //Log.e("IngredientAdapter", "" + data. + data.getUnit() + data.getIngredient());
             TextView tv = (TextView)_view.findViewById(R.id.activity_recipe_ingredientelement_number);
-            tv.setText (String.valueOf(data.amount) + String.valueOf(data.unit));
+            tv.setText (String.valueOf(data.getAmount()) + String.valueOf(data.getUnit()));
 
             TextView tv2 = (TextView)_view.findViewById(R.id.activity_recipe_ingredientelement_text);
-            tv2.setText(data.ingredient);
+            tv2.setText(data.getIngredient());
         }
 
         return _view;

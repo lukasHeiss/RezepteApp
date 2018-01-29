@@ -18,7 +18,6 @@ import android.widget.TextView;
 
 import fhooe.se.android.rezeptapp.DAL.DALFactory;
 import fhooe.se.android.rezeptapp.DAL.IDataManager;
-import fhooe.se.android.rezeptapp.DAL.IngredientData;
 import fhooe.se.android.rezeptapp.DAL.IngredientDataAdapter;
 import fhooe.se.android.rezeptapp.DAL.InstructionDataAdapter;
 import fhooe.se.android.rezeptapp.DAL.RecipeExtendedData;
@@ -82,7 +81,7 @@ public class RecipeActivity extends Activity implements RecipeDataCallBack{
 
             LinearLayout ingredients = (LinearLayout) findViewById(R.id.activity_recipe_ingredientList);
             ArrayAdapter ingredientsAdapter = new IngredientDataAdapter(this, null);
-            ingredientsAdapter.addAll(data.getIngredients());
+            ingredientsAdapter.addAll(data.getIngredientList());
             for(int i = 0; i < ingredientsAdapter.getCount(); i++){
                 ingredients.addView(ingredientsAdapter.getView(i, null, ingredients));
             }

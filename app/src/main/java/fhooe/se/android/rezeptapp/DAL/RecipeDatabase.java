@@ -43,6 +43,7 @@ class Instruction{
         this.id = id;
         this.instruction = instruction;
     }
+
     protected int recipeId;
     protected int id;
 
@@ -61,6 +62,13 @@ class Ingredient{
         this.amount = amount;
         this.unit = unit;
         this.ingredient = ingredient;
+    }
+    Ingredient(int recipeId, int id, IngredientData other){
+        this.recipeId = recipeId;
+        this.id = id;
+        this.amount = other.getAmount();
+        this.unit = other.getUnit();
+        this.ingredient = other.getIngredient();
     }
     protected int recipeId;
     protected int id;
