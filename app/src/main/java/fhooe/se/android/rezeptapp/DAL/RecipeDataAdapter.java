@@ -1,20 +1,24 @@
 package fhooe.se.android.rezeptapp.DAL;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import fhooe.se.android.rezeptapp.R;
+import fhooe.se.android.rezeptapp.RecipeActivity;
 
 /**
  * Created by Lukas on 11.01.18.
  */
 
-public class RecipeDataAdapter extends ArrayAdapter<RecipeData> {
+public class RecipeDataAdapter extends ArrayAdapter<Recipe>  {
     private View.OnClickListener mListener;
 
 
@@ -23,6 +27,9 @@ public class RecipeDataAdapter extends ArrayAdapter<RecipeData> {
         mListener = _listener;
     }
 
+    public int getRecipeId(int _pos){
+        return getItem(_pos).id;
+    }
 
     @Override
     public View getView(int _pos, View _view, ViewGroup _parent) {
@@ -32,18 +39,19 @@ public class RecipeDataAdapter extends ArrayAdapter<RecipeData> {
                     getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             _view = inflater.inflate(R.layout.activity_list_element, null);
         }
-        final RecipeData data = getItem(_pos);
+        final Recipe data = getItem(_pos);
         if (data != null){
             TextView tv = null;
             tv = (TextView)_view.findViewById(R.id.activity_list_element_textview_name);
-            tv.setText(data.getRecipeName());
+            tv.setText(data.recipeName);
 
             ImageView iv = null;
             iv=(ImageView) _view.findViewById(R.id.activity_list_element_icon);
-            iv.setImageResource(data.getIcon());
+            iv.setImageResource(data.icon);
         }
 
         return _view;
         //return super.getView(position, convertView, parent);
     }
+
 }

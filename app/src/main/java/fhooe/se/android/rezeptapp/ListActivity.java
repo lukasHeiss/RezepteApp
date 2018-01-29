@@ -31,7 +31,7 @@ public class ListActivity extends Activity implements View.OnClickListener, Adap
 
         adapter = new RecipeDataAdapter(this, this);
         dataManager = DALFactory.GetDataManager();
-        dataManager.FillAdapter(adapter);
+        dataManager.FillAdapter(adapter, this);
 
         ListView lv = (ListView)findViewById(R.id.activity_list_mainview);
         lv.setAdapter(adapter);
@@ -43,11 +43,11 @@ public class ListActivity extends Activity implements View.OnClickListener, Adap
                             View _view,
                             int _i,
                             long _l) {
-        RecipeData data = (RecipeData) _adapterView.getAdapter().getItem(_i);
 
-        Log.i(TAG, "Set extra " + data.getId() + " " + data.getRecipeName());
+        int recipeId = ((RecipeDataAdapter)_adapterView.getAdapter()).getRecipeId(_i);
+        //Log.i(TAG, "Set extra " + data.getId() + " " + data.getRecipeName());
         Intent i = new Intent(getApplicationContext(), RecipeActivity.class);
-        i.putExtra("recipe", data.getId());
+        i.putExtra("recipe", recipeId);
         startActivity(i);
     }
 

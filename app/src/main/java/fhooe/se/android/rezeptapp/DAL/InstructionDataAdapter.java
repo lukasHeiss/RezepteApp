@@ -13,7 +13,7 @@ import fhooe.se.android.rezeptapp.R;
  * Created by Tom on 24.01.2018.
  */
 
-public class InstructionDataAdapter extends ArrayAdapter<String>  {
+public class InstructionDataAdapter extends ArrayAdapter<Instruction>  {
     private View.OnClickListener mListener;
 
     public InstructionDataAdapter(Context _c, View.OnClickListener _listener) {
@@ -30,13 +30,13 @@ public class InstructionDataAdapter extends ArrayAdapter<String>  {
                     getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             _view = inflater.inflate(R.layout.activity_recipe_instructionelement, null);
         }
-        final String data = getItem(_pos);
+        final Instruction data = getItem(_pos);
         if (data != null){
             TextView tv = (TextView)_view.findViewById(R.id.activity_recipe_instructionelement_number);
             tv.setText(String.valueOf(_pos + 1));
 
             TextView tv2 = (TextView)_view.findViewById(R.id.activity_recipe_instructionelement_text);
-            tv2.setText(data);
+            tv2.setText(data.instruction);
         }
 
         return _view;
