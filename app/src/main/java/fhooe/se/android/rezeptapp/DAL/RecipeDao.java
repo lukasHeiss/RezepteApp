@@ -37,10 +37,10 @@ public interface RecipeDao{
     @Query("SELECT * FROM Recipe Where id =:recipeId")
     public Recipe GetRecipeById(int recipeId);
 
-    @Query("SELECT * FROM Recipe INNER JOIN Instruction WHERE recipeId = :recipeId")
+    @Query("SELECT * FROM Recipe INNER JOIN Instruction ON Recipe.id = Instruction.recipeId WHERE recipeId = :recipeId")
     public List<Instruction> GetInstructions(int recipeId);
 
-    @Query("SELECT * FROM Recipe INNER JOIN Ingredient WHERE recipeId = :recipeId")
+    @Query("SELECT * FROM Recipe INNER JOIN Ingredient ON Recipe.id = Ingredient.recipeId WHERE recipeId = :recipeId")
     public List<Ingredient> GetIngredients(int recipeId);
 
 

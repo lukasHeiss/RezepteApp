@@ -84,6 +84,7 @@ public class DataManager extends Application implements IDataManager  {
             @Override
             protected RecipeExtendedData doInBackground(Void... params) {
                 Log.e("whatev", "getExt: instr: "+ dao.GetInstructions(recipeId).size());
+
                 List<String> instrList = new ArrayList<String>();
                 List<IngredientData> ingrList = new ArrayList<IngredientData>();
                 for (Instruction instr:dao.GetInstructions(recipeId))
