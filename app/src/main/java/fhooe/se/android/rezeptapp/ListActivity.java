@@ -8,12 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import fhooe.se.android.rezeptapp.DAL.DALFactory;
+import fhooe.se.android.rezeptapp.DAL.DataManager;
 import fhooe.se.android.rezeptapp.DAL.IDataManager;
+import fhooe.se.android.rezeptapp.DAL.IngredientData;
 import fhooe.se.android.rezeptapp.DAL.RecipeData;
 import fhooe.se.android.rezeptapp.DAL.RecipeDataAdapter;
 import fhooe.se.android.rezeptapp.DAL.RecipeExtendedData;
@@ -36,6 +39,12 @@ public class ListActivity extends Activity implements View.OnClickListener, Adap
         ListView lv = (ListView)findViewById(R.id.activity_list_mainview);
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(this);
+
+
+        Button button = (Button)findViewById(R.id.activity_list_addNew);
+        button.setText("Add Käsebrot");
+        button.setOnClickListener(this);
+
     }
 
     @Override
@@ -53,6 +62,13 @@ public class ListActivity extends Activity implements View.OnClickListener, Adap
 
     @Override
     public void onClick(View _view) {
-        Toast.makeText(this,"Properties has been selected", Toast.LENGTH_SHORT).show();
+        RecipeExtendedData recipe = new RecipeExtendedData("Käsebrot", R.drawable.img_placeholder);
+        recipe.setDifficulty(R.string.diff_beginner);
+        recipe.setTimePreparation(1);
+        recipe.AddIngredient(new IngredientData(1, "Scheibe", "Käse"));
+        recipe.AddIngredient(new IngredientData(1, "Scheibe", "Brot"));
+        recipe.AddInstruction("Die Käsescheibe auf das Brot legen. Tadaaaa!");
+        dataManager.saveRecipe(adapter, recipe);
+        //Toast.makeText(this,"Properties has been selected", Toast.LENGTH_SHORT).show();
     }
 }
