@@ -6,7 +6,7 @@
     <string name="kilo">kg</string>
     <string name="prepTime">Vorbereitungszeit</string>
     <string name="cookTime">Kochzeit</string>
-    
+
     <string name="diff_beginner">Anfänger</string>
     <string name="diff_advanced">Fortgeschritten</string>
     <string name="diff_master">Meisterkoch</string>
