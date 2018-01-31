@@ -36,8 +36,7 @@ public class RecipeActivity extends Activity implements RecipeDataCallBack{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
 
-        int recipeId = getIntent().getIntExtra("recipe", -1);
-        Log.e(TAG, "recipe #" + recipeId + " selected");
+        int recipeId = getIntent().getIntExtra("recipe", 0);
 
         //get extended recipe. the callback function is called as soon as the recipe has been loaded.
         manager.GetRecipeExtended(recipeId, this);
@@ -139,7 +138,7 @@ public class RecipeActivity extends Activity implements RecipeDataCallBack{
 
             //add the List of instructions
             LinearLayout instructions = (LinearLayout) findViewById(R.id.activity_recipe_instructionList);
-            ArrayAdapter instructionAdapter = new InstructionDataAdapter(this, null);
+            ArrayAdapter instructionAdapter = new InstructionDataAdapter(this, null, false);
             instructionAdapter.addAll(data.getInstructionList());
             for(int i = 0; i < instructionAdapter.getCount(); i++){
                 instructions.addView(instructionAdapter.getView(i, null, instructions));
@@ -147,7 +146,7 @@ public class RecipeActivity extends Activity implements RecipeDataCallBack{
 
             //add the List of ingredients
             LinearLayout ingredients = (LinearLayout) findViewById(R.id.activity_recipe_ingredientList);
-            ArrayAdapter ingredientsAdapter = new IngredientDataAdapter(this, null);
+            ArrayAdapter ingredientsAdapter = new IngredientDataAdapter(this, null, false);
             ingredientsAdapter.addAll(data.getIngredientList());
             for(int i = 0; i < ingredientsAdapter.getCount(); i++){
                 ingredients.addView(ingredientsAdapter.getView(i, null, ingredients));

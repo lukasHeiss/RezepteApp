@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.Locale;
@@ -20,10 +21,12 @@ import fhooe.se.android.rezeptapp.R;
 
 public class IngredientDataAdapter extends ArrayAdapter<IngredientData> {
     private View.OnClickListener mListener;
+    boolean isEditable;
 
-    public IngredientDataAdapter(Context _c, View.OnClickListener _listener) {
+    public IngredientDataAdapter(Context _c, View.OnClickListener _listener, boolean isEditable) {
         super(_c, -1);
         mListener = _listener;
+        this.isEditable = isEditable;
     }
 
 
@@ -33,11 +36,15 @@ public class IngredientDataAdapter extends ArrayAdapter<IngredientData> {
             Context c = getContext();
             LayoutInflater inflater = (LayoutInflater)
                     getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            _view = inflater.inflate(R.layout.activity_recipe_ingredientelement, null);
+            if(isEditable)
+                _view = inflater.inflate(R.layout.activity_recipe_edit_ingredientelement, null);
+            else
+                _view = inflater.inflate(R.layout.activity_recipe_ingredientelement, null);
         }
         final IngredientData data = getItem(_pos);
-        if (data != null){
+        if (data != null && !isEditable){
             //Log.e("IngredientAdapter", "" + data. + data.getUnit() + data.getIngredient());
+
             TextView tv = (TextView)_view.findViewById(R.id.activity_recipe_ingredientelement_number);
             tv.setText (String.format(Locale.getDefault(),"%.0f%s", data.getAmount(), String.valueOf(data.getUnit())));
 

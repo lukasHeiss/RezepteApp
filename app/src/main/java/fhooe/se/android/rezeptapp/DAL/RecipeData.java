@@ -7,7 +7,7 @@ package fhooe.se.android.rezeptapp.DAL;
  */
 
 public class RecipeData {
-    private int id;
+    private int id = 0;
     private String recipeName;
     private int icon;
 
@@ -34,4 +34,7 @@ public class RecipeData {
     public int getId(){return id;}
     public String getRecipeName(){return recipeName;}
     public int getIcon(){return icon;}
+
+    public void setRecipeName(String recipeName){this.recipeName = recipeName;}
+    public void setIcon(int icon){this.icon = icon;}
 }

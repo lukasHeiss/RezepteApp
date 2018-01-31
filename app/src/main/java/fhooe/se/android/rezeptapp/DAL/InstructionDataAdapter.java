@@ -16,10 +16,13 @@ import fhooe.se.android.rezeptapp.R;
 
 public class InstructionDataAdapter extends ArrayAdapter<String>  {
     private View.OnClickListener mListener;
+    private boolean isEditable;
 
-    public InstructionDataAdapter(Context _c, View.OnClickListener _listener) {
+
+    public InstructionDataAdapter(Context _c, View.OnClickListener _listener, boolean isEditable) {
         super(_c, -1);
         mListener = _listener;
+        this.isEditable = isEditable;
     }
 
 
@@ -29,10 +32,13 @@ public class InstructionDataAdapter extends ArrayAdapter<String>  {
             Context c = getContext();
             LayoutInflater inflater = (LayoutInflater)
                     getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            _view = inflater.inflate(R.layout.activity_recipe_instructionelement, null);
+            if(isEditable)
+                _view = inflater.inflate(R.layout.activity_recipe_edit_instructionelement, null);
+            else
+                _view = inflater.inflate(R.layout.activity_recipe_instructionelement, null);
         }
         final String data = getItem(_pos);
-        if (data != null){
+        if (data != null && !isEditable){
             TextView tv = (TextView)_view.findViewById(R.id.activity_recipe_instructionelement_number);
             tv.setText(String.valueOf(_pos + 1));
 
