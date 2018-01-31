@@ -9,4 +9,15 @@
     <string name="diff_beginner">Anfänger</string>
     <string name="diff_advanced">Fortgeschritten</string>
     <string name="diff_master">Meisterkoch</string>
+
+    <string name="instructions">Anweisungen</string>
+    <string name="amount">Menge</string>
+    <string name="ingredients">Zutaten</string>
+
+    <string-array name="difficulties">
+        <item>@string/diff_beginner</item>
+        <item>@string/diff_advanced</item>
+        <item>@string/diff_master</item>
+    </string-array>
+
 </resources>

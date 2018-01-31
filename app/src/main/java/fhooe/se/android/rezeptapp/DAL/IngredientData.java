@@ -10,7 +10,7 @@ public class IngredientData {
     private String unit;
     private String ingredient;
 
-    public IngredientData(int amount, String unit, String ingredient) {
+    public IngredientData(double amount, String unit, String ingredient) {
         this.amount = amount;
         this.unit = unit;
         this.ingredient = ingredient;

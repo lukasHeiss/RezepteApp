@@ -1,6 +1,7 @@
 package fhooe.se.android.rezeptapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
@@ -58,7 +59,9 @@ public class RecipeActivity extends Activity implements RecipeDataCallBack{
                 finish();
                 return true;
             case R.id.menu_action_edit:
-                Toast.makeText(this, "Edit clicked", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, edit_recipe.class);
+                intent.putExtra("recipe", data.getId());
+                startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

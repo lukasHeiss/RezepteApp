@@ -45,9 +45,7 @@ public class ListActivity extends Activity implements View.OnClickListener, Adap
         lv.setOnItemClickListener(this);
 
 
-        Button button = (Button)findViewById(R.id.activity_list_addNew);
-        button.setText("Add Käsebrot");
-        button.setOnClickListener(this);
+
 
     }
 

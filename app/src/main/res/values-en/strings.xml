@@ -10,4 +10,8 @@
     <string name="diff_beginner">beginner</string>
     <string name="diff_advanced">advanced</string>
     <string name="diff_master">master cook</string>
+
+    <string name="instructions">Instructions</string>
+    <string name="amount">Amount</string>
+    <string name="ingredients">Ingredients</string>
 </resources>

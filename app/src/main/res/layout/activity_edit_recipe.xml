@@ -50,22 +50,85 @@
             android:id="@+id/activity_recipe_edit_ingredientList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dip"
-            android:background="#0f0"/>
+            android:layout_marginTop="10dip">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp">
+
+                <ImageView
+                    android:id="@+id/activity_recipe_diff_icon"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_weight="8"
+                    android:src="@mipmap/ic_launcher" />
+
+                <Spinner
+                    android:id="@+id/activity_recipe_edit_difficulty"
+                    android:layout_width="match_parent"
+                    android:layout_height="43dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="20dp"
+                    android:textSize="18sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="40dp">
+                <TextView
+                    android:layout_width="130dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/amount"
+                    android:textSize="18sp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/ingredients"
+                    android:textSize="18sp" />
+            </LinearLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:orientation="vertical"
             android:id="@+id/activity_recipe_edit_instructionList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dip"
-            android:background="#0f0"/>
+            android:paddingTop="40dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="130dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text=""
+                    android:textSize="18sp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/instructions"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            </LinearLayout>
 
         <Button
             android:id="@+id/activity_edit_recipe_addRecipe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Rezept hinzufügen" />
+            android:text="Rezept speichern" />
     </LinearLayout>
 </ScrollView>

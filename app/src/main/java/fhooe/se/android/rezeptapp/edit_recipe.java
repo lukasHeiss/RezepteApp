@@ -3,14 +3,18 @@ package fhooe.se.android.rezeptapp;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,8 +25,10 @@ import fhooe.se.android.rezeptapp.DAL.IngredientDataAdapter;
 import fhooe.se.android.rezeptapp.DAL.InstructionDataAdapter;
 import fhooe.se.android.rezeptapp.DAL.RecipeExtendedData;
 
-public class edit_recipe extends Activity implements View.OnClickListener, RecipeDataCallBack{
+public class edit_recipe extends Activity implements View.OnClickListener, RecipeDataCallBack, TextView.OnEditorActionListener{
     private static IDataManager dataManager = DALFactory.GetDataManager();
+    InstructionDataAdapter instrAdapter;
+    IngredientDataAdapter ingrAdapter;
     ArrayAdapter adapter;
     RecipeExtendedData data;
 
@@ -49,22 +55,91 @@ public class edit_recipe extends Activity implements View.OnClickListener, Recip
     @Override
     public void onClick(View _view) {
         EditText editText = (EditText) findViewById(R.id.activity_recipe_edit_text_recipename);
+
         data.setRecipeName(editText.getText().toString());
 
-        data.setDifficulty(R.string.diff_beginner);
-        data.setTimePreparation(10);
-        data.AddIngredient(new IngredientData(1, "Stück", "Tomate"));
-        data.AddIngredient(new IngredientData(100, "g", "Teig"));
-        data.AddInstruction("Die Tomaten auf den Teig legen!");
+        Spinner spinner = (Spinner) findViewById(R.id.activity_recipe_edit_difficulty);
+        if(spinner.getSelectedItem().equals(getResources().getString(R.string.diff_beginner)))
+            data.setDifficulty(R.string.diff_beginner);
+        if(spinner.getSelectedItem().equals(getResources().getString(R.string.diff_advanced)))
+            data.setDifficulty(R.string.diff_advanced);
+        if(spinner.getSelectedItem().equals(getResources().getString(R.string.diff_master)))
+            data.setDifficulty(R.string.diff_master);
+
+        LinearLayout metaList = (LinearLayout)findViewById(R.id.activity_recipe_edit_metaList);
+
+        data.setTimeCooking(GetIntFromEditText((EditText) metaList.getChildAt(0).findViewById(R.id.activity_recipe_edit_meta_text)));
+        data.setTimePreparation(GetIntFromEditText((EditText)metaList.getChildAt(1).findViewById(R.id.activity_recipe_edit_meta_text)));
+        data.setBasePortions(GetIntFromEditText((EditText)metaList.getChildAt(2).findViewById(R.id.activity_recipe_edit_meta_text)));
+
+
+        LinearLayout instructions = (LinearLayout) findViewById(R.id.activity_recipe_edit_instructionList);
+        for(int i = 1; i < instructions.getChildCount(); i++){
+            data.AddInstruction(((EditText)instructions.getChildAt(i).findViewById(R.id.activity_recipe_edit_instructionelement_text)).getText().toString());
+        }
+
+        LinearLayout ingredients = (LinearLayout) findViewById(R.id.activity_recipe_edit_ingredientList);
+        for(int i = 2; i < ingredients.getChildCount(); i++){
+            String ingredient = ((EditText)ingredients.getChildAt(i).findViewById(R.id.activity_recipe_edit_ingredientelement_text)).getText().toString();
+            double amount = GetIntFromEditText((EditText)ingredients.getChildAt(i).findViewById(R.id.activity_recipe_edit_ingredientelement_number)) / data.getBasePortions();
+            String unit = ((EditText)ingredients.getChildAt(i).findViewById(R.id.activity_recipe_edit_ingredientelement_unit)).getText().toString();
+            data.AddIngredient(new IngredientData(amount, unit, ingredient));
+        }
+
         dataManager.saveRecipe(adapter, data);
 
         finish();
 
     }
 
+    @Override
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        Log.e("whatev", "onEditorAction actionId:" + actionId + " event:" + event);
+        if(actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE  ||
+                event != null &&
+                event.getAction() == KeyEvent.ACTION_DOWN &&
+                event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+            if(event == null || !event.isShiftPressed()){
+                Log.e("whatev", "hmm" + v);
+                if(v == findViewById(R.id.activity_recipe_edit_ingredientelement_text)){
+                    AddIngredientField();
+                }
+                else if(v == findViewById(R.id.activity_recipe_edit_instructionelement_text))
+                    AddInstructionField();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private int GetIntFromEditText(EditText editText) {
+        try{
+            return Integer.parseInt(editText.getText().toString());
+        } catch (NumberFormatException e){
+            return 0;
+        }
+    }
+
+    private void AddIngredientField() {
+        Log.e("whatev", "Add ingrfield");
+        LinearLayout ingredients = (LinearLayout) findViewById(R.id.activity_recipe_edit_ingredientList);
+
+        View view = ingrAdapter.getView(0, null, ingredients);
+        ((EditText)view.findViewById(R.id.activity_recipe_edit_ingredientelement_text)).setOnEditorActionListener(this);
+        ingredients.addView(view);
+    }
+
+    private void AddInstructionField() {
+        LinearLayout instructions = (LinearLayout) findViewById(R.id.activity_recipe_edit_instructionList);
+
+        View view = instrAdapter.getView(0, null, instructions);
+        ((EditText)view.findViewById(R.id.activity_recipe_edit_instructionelement_text)).setOnEditorActionListener(this);
+        instructions.addView(view);
+    }
+
 
     //helper function to create the Meta Views (Time, portions etc), to reduce double code.
-    private View getMetaElementView(String data, int image){
+    private View getMetaElementView(int data, int image, int hint){
         LayoutInflater inflater = (LayoutInflater)
                 this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.activity_recipe_edit_meta, null);
@@ -72,6 +147,9 @@ public class edit_recipe extends Activity implements View.OnClickListener, Recip
         iv.setImageResource(image);
 
         EditText tv = (EditText) view.findViewById(R.id.activity_recipe_edit_meta_text);
+        tv.setHint(getResources().getString(hint));
+        if(data > 0)
+            tv.setText(data +"");
 
         return view;
     }
@@ -81,27 +159,50 @@ public class edit_recipe extends Activity implements View.OnClickListener, Recip
             //add meta elements
         data = recipe;
 
+        TextView tv = (TextView) findViewById(R.id.activity_recipe_edit_text_recipename);
+        tv.setText(data.getRecipeName());
+
         LinearLayout metaElements = (LinearLayout) findViewById(R.id.activity_recipe_edit_metaList);
-        metaElements.addView(getMetaElementView(String.valueOf(data.getTimeCooking()) + " m " + getResources().getString(R.string.cookTime), R.drawable.ic_clock));
-        metaElements.addView(getMetaElementView(String.valueOf(data.getTimePreparation()) + " m " + getResources().getString(R.string.prepTime), R.drawable.ic_clock));
-        //metaElements.addView(getMetaElementView(getResources().getString(data.getDifficulty()), R.drawable.ic_chef));
-        metaElements.addView(getMetaElementView(data.getBasePortions() + getResources().getString(R.string.servings), R.drawable.ic_cutlery));
+        metaElements.addView(getMetaElementView(data.getTimeCooking() , R.drawable.ic_clock, R.string.cookTime));
+        metaElements.addView(getMetaElementView(data.getTimePreparation(), R.drawable.ic_clock, R.string.prepTime));
+
+        ImageView iv = (ImageView) findViewById(R.id.activity_recipe_diff_icon);
+        iv.setImageResource(R.drawable.ic_chef);
+
+        Spinner spinner = (Spinner) findViewById(R.id.activity_recipe_edit_difficulty);
+        ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_dropdown_item);
+        adapter.addAll(getResources().getStringArray(R.array.difficulties));
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        if(data.getDifficulty() > 0){
+            int i = 0;
+            for(String str : getResources().getStringArray(R.array.difficulties)){
+                if(str.equals(getResources().getString(data.getDifficulty())))
+                    spinner.setSelection(i);
+                i++;
+            }
+        }
+        metaElements.addView(getMetaElementView(data.getBasePortions(), R.drawable.ic_cutlery, R.string.servings));
 
 
         //add the List of instructions
         LinearLayout instructions = (LinearLayout) findViewById(R.id.activity_recipe_edit_instructionList);
-        ArrayAdapter instructionAdapter = new InstructionDataAdapter(this, null, true);
-        instructionAdapter.add("");
-        for(int i = 0; i < instructionAdapter.getCount(); i++){
-            instructions.addView(instructionAdapter.getView(i, null, instructions));
+        instrAdapter = new InstructionDataAdapter(this, null, true);
+        instrAdapter.add("");
+        for(int i = 0; i < instrAdapter.getCount(); i++){
+            View view = instrAdapter.getView(i, null, instructions);
+            ((EditText)view.findViewById(R.id.activity_recipe_edit_instructionelement_text)).setOnEditorActionListener(this);
+            instructions.addView(view);
         }
 
         //add the List of ingredients
         LinearLayout ingredients = (LinearLayout) findViewById(R.id.activity_recipe_edit_ingredientList);
-        ArrayAdapter ingredientsAdapter = new IngredientDataAdapter(this, null, true);
-        ingredientsAdapter.add(new IngredientData(0, "", ""));
-        for(int i = 0; i < ingredientsAdapter.getCount(); i++){
-            ingredients.addView(ingredientsAdapter.getView(i, null, ingredients));
+        ingrAdapter = new IngredientDataAdapter(this, null, true);
+        ingrAdapter.add(new IngredientData(0, "", ""));
+        for(int i = 0; i < ingrAdapter.getCount(); i++){
+            View view = ingrAdapter.getView(i, null, ingredients);
+            ((EditText)view.findViewById(R.id.activity_recipe_edit_ingredientelement_text)).setOnEditorActionListener(this);
+            ingredients.addView(view);
         }
 
     }
