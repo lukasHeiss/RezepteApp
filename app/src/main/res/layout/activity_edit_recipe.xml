@@ -20,11 +20,20 @@
             android:layout_height="198dp"
             android:src="@drawable/img_placeholder" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Recipe Name"
+            android:textSize="20dp"
+            android:gravity="center"/>
+
         <EditText
             android:id="@+id/activity_recipe_edit_text_recipename"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Recipe Name"
+            android:maxLines="1"
+            android:inputType="text"
+            android:imeOptions="actionNext"
             android:textSize="20dp"
             android:gravity="center"/>
 

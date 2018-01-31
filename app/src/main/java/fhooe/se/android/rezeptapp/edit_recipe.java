@@ -48,7 +48,7 @@ public class edit_recipe extends Activity implements View.OnClickListener {
         recipe.AddIngredient(new IngredientData(1, "Stück", "Tomate"));
         recipe.AddIngredient(new IngredientData(100, "g", "Teig"));
         recipe.AddInstruction("Die Tomaten auf den Teig legen!");
-        //dataManager.saveRecipe(adapter, recipe);
+       // dataManager.saveRecipe(adapter, recipe);
 
         Toast.makeText(this,value, Toast.LENGTH_SHORT).show();
 
