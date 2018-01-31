@@ -21,7 +21,7 @@ import fhooe.se.android.rezeptapp.RecipeActivity;
  * This would break some stuff in DataManager, so I'm not touching anything.
  */
 
-public class RecipeDataAdapter extends ArrayAdapter<Recipe>  {
+public class RecipeDataAdapter extends ArrayAdapter<RecipeData>  {
     private View.OnClickListener mListener;
 
 
@@ -31,7 +31,7 @@ public class RecipeDataAdapter extends ArrayAdapter<Recipe>  {
     }
 
     public int getRecipeId(int _pos){
-        return getItem(_pos).id;
+        return getItem(_pos).getId();
     }
 
     @Override
@@ -42,15 +42,15 @@ public class RecipeDataAdapter extends ArrayAdapter<Recipe>  {
                     getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             _view = inflater.inflate(R.layout.activity_list_element, null);
         }
-        final Recipe data = getItem(_pos);
+        final RecipeData data = getItem(_pos);
         if (data != null){
             TextView tv = null;
             tv = (TextView)_view.findViewById(R.id.activity_list_element_textview_name);
-            tv.setText(data.recipeName);
+            tv.setText(data.getRecipeName());
 
             ImageView iv = null;
             iv=(ImageView) _view.findViewById(R.id.activity_list_element_icon);
-            iv.setImageResource(data.icon);
+            iv.setImageResource(data.getIcon());
         }
 
         return _view;

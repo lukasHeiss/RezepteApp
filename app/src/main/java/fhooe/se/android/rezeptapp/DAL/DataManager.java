@@ -46,7 +46,7 @@ public class DataManager extends Application implements IDataManager  {
 
     @SuppressLint("StaticFieldLeak")
     @Override
-    public void FillAdapter(final ArrayAdapter<Recipe> adapter, final Context context) {
+    public void FillAdapter(final ArrayAdapter<RecipeData> adapter, final Context context) {
 
         if(_db == null)initDb(context);
         final RecipeDao dao = _db.recipeDao();
@@ -64,7 +64,8 @@ public class DataManager extends Application implements IDataManager  {
                 }
                 Log.e("whatev" , "filladapter running");
 
-                adapter.addAll(dao.LoadAllRecipes());
+                for(Recipe recipe : dao.LoadAllRecipes())
+                    adapter.add(new RecipeData(recipe));
                 return null;
             }
 
@@ -75,9 +76,38 @@ public class DataManager extends Application implements IDataManager  {
         }.execute();
     }
 
+    @SuppressLint("StaticFieldLeak")
+    @Override
+    public void GetRecipeExtended(final RecipeData recipe, final RecipeDataCallBack callBack) {
+        //if(_db == null)initDb(context);
+        final RecipeDao dao = _db.recipeDao();
+
+        new AsyncTask<Void, Void, RecipeExtendedData>() {
+            @Override
+            protected RecipeExtendedData doInBackground(Void... params) {
+                Log.e("whatev", "getExt: instr: "+ dao.GetInstructions(recipe.getId()).size());
+
+                List<String> instrList = new ArrayList<String>();
+                List<IngredientData> ingrList = new ArrayList<IngredientData>();
+                for (Instruction instr:dao.GetInstructions(recipe.getId()))
+                    instrList.add(instr.instruction);
+                for(Ingredient ingr : dao.GetIngredients(recipe.getId()))
+                    ingrList.add(new IngredientData(ingr));
+                return new RecipeExtendedData(dao.GetRecipeById(recipe.getId()),
+                        instrList, ingrList);
+
+            }
+
+            @Override
+            protected void onPostExecute(RecipeExtendedData recipe){
+                callBack.dataLoaded(recipe);
+            }
+        }.execute();
+    }
+
+    @SuppressLint("StaticFieldLeak")
     @Override
     public void GetRecipeExtended(final int recipeId, final RecipeDataCallBack callBack) {
-        //if(_db == null)initDb(context);
         final RecipeDao dao = _db.recipeDao();
 
         new AsyncTask<Void, Void, RecipeExtendedData>() {
@@ -91,9 +121,8 @@ public class DataManager extends Application implements IDataManager  {
                     instrList.add(instr.instruction);
                 for(Ingredient ingr : dao.GetIngredients(recipeId))
                     ingrList.add(new IngredientData(ingr));
-                RecipeExtendedData recipe = new RecipeExtendedData(dao.GetRecipeById(recipeId),
+                return new RecipeExtendedData(dao.GetRecipeById(recipeId),
                         instrList, ingrList);
-                return recipe;
 
             }
 
@@ -104,10 +133,9 @@ public class DataManager extends Application implements IDataManager  {
         }.execute();
     }
 
-
     @SuppressLint("StaticFieldLeak")
     @Override
-    public void saveRecipe(final ArrayAdapter<Recipe> adapter, final RecipeExtendedData extendedRecipe) {
+    public void saveRecipe(final ArrayAdapter<RecipeData> adapter, final RecipeExtendedData extendedRecipe) {
         final RecipeDao dao = _db.recipeDao();
 
         final Recipe recipe = new Recipe();
@@ -117,11 +145,12 @@ public class DataManager extends Application implements IDataManager  {
         recipe.basePortions = extendedRecipe.getBasePortions();
         recipe.timeCooking = extendedRecipe.getTimeCooking();
         recipe.timePreparation = extendedRecipe.getTimePreparation();
+        recipe.difficulty = extendedRecipe.getDifficulty();
 
         updating = true;
-        new AsyncTask<Void, Void, Recipe>() {
+        new AsyncTask<Void, Void, RecipeData>() {
             @Override
-            protected Recipe doInBackground(Void... params) {
+            protected RecipeData doInBackground(Void... params) {
                 long newId;
                 try {
                     newId = dao.InsertRecipe(recipe);
@@ -144,11 +173,13 @@ public class DataManager extends Application implements IDataManager  {
                 for(String instr : extendedRecipe.getInstructionList())
                     instrList.add(new Instruction((int) newId, i++, instr));
                 dao.InsertInstructions(instrList);
-                return recipe;
+
+                final RecipeData recipeData = new RecipeData(recipe);
+                return recipeData;
             }
 
             @Override
-            protected void onPostExecute(Recipe recipe){
+            protected void onPostExecute(RecipeData recipe){
                 if(adapter != null){
                     adapter.add(recipe);
                     //adapter.notifyDataSetChanged();
@@ -158,26 +189,26 @@ public class DataManager extends Application implements IDataManager  {
         }.execute();
     }
 
+    @SuppressLint("StaticFieldLeak")
+    @Override
+    public void DeleteRecipe(final ArrayAdapter<RecipeData> adapter, final RecipeData recipe){
+        final RecipeDao dao = _db.recipeDao();
 
-
-
-    /*private void loadRecipes(final ArrayAdapter<Recipe> adapter){
-
-        new AsyncTask<Void, Void, List<Recipe>>() {
+        new AsyncTask<Void, Void, Void>() {
             @Override
-            protected List doInBackground(Void... params) {
-                List<Recipe> result = new ArrayList<>();
-                result = _db.recipeDao().LoadAllRecipes();
-                return result;
-            }
+            protected Void doInBackground(Void... params) {
+                Recipe dbRecipe = new Recipe();
+                dbRecipe.id = recipe.getId();
+                dao.DeleteRecipe(dbRecipe);
 
-            @Override
-            protected void onPostExecute(List result) {
-                adapter.addAll(result);
-                adapter.notifyDataSetChanged();
+                adapter.remove(recipe);
+                return null;
             }
         }.execute();
-    }*/
+    }
+
+
+
 
 
 
@@ -214,5 +245,4 @@ public class DataManager extends Application implements IDataManager  {
 
         p.edit().putBoolean("PREFERENCE_FIRST_RUN", false).apply();
     }
-
 }

@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.util.Locale;
+
 import fhooe.se.android.rezeptapp.R;
 
 /**
@@ -37,7 +39,7 @@ public class IngredientDataAdapter extends ArrayAdapter<IngredientData> {
         if (data != null){
             //Log.e("IngredientAdapter", "" + data. + data.getUnit() + data.getIngredient());
             TextView tv = (TextView)_view.findViewById(R.id.activity_recipe_ingredientelement_number);
-            tv.setText (String.valueOf(data.getAmount()) + String.valueOf(data.getUnit()));
+            tv.setText (String.format(Locale.getDefault(),"%.0f%s", data.getAmount(), String.valueOf(data.getUnit())));
 
             TextView tv2 = (TextView)_view.findViewById(R.id.activity_recipe_ingredientelement_text);
             tv2.setText(data.getIngredient());

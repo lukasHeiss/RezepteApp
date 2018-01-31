@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import fhooe.se.android.rezeptapp.DAL.DALFactory;
 import fhooe.se.android.rezeptapp.DAL.IDataManager;
@@ -32,6 +33,8 @@ public class RecipeActivity extends Activity implements RecipeDataCallBack{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.activity_recipe_toolbar);
+        //setActionBar(toolbar);
 
         int recipeId = getIntent().getIntExtra("recipe", -1);
         Log.e(TAG, "recipe #" + recipeId + " selected");
@@ -67,13 +70,13 @@ public class RecipeActivity extends Activity implements RecipeDataCallBack{
 
             //add meta elements
             LinearLayout metaElements = (LinearLayout) findViewById(R.id.activity_recipe_metaList);
-            if(data.getTimeCooking() != -1)
+            if(data.getTimeCooking() > 0)
                 metaElements.addView(getMetaElementView(String.valueOf(data.getTimeCooking()) + " m " + getResources().getString(R.string.cookTime), R.drawable.ic_clock));
-            if(data.getTimePreparation() != -1)
+            if(data.getTimePreparation() > 0)
                 metaElements.addView(getMetaElementView(String.valueOf(data.getTimePreparation()) + " m " + getResources().getString(R.string.prepTime), R.drawable.ic_clock));
-            if(data.getDifficulty() != -1)
+            if(data.getDifficulty() > 0)
                 metaElements.addView(getMetaElementView(getResources().getString(data.getDifficulty()), R.drawable.ic_chef));
-            metaElements.addView(getMetaElementView(data.getBasePortions()+"", R.drawable.ic_cutlery));
+            metaElements.addView(getMetaElementView(data.getBasePortions() + getResources().getString(R.string.servings), R.drawable.ic_cutlery));
 
 
             //add the List of instructions

@@ -18,22 +18,26 @@ public interface IDataManager {
      * @param adapter the adapter to be filled with all Recipes
      * @param context Current Application Context.
      */
-    void FillAdapter(ArrayAdapter<Recipe> adapter, Context context);
+    void FillAdapter(ArrayAdapter<RecipeData> adapter, Context context);
 
     /**
      * Gets the entire RecipeDataExtended for a specified recipe.
      * implement RecipeDataCallBack and pass this as the callback to use this function correctly.
-     * @param recipeId the id of the desired Recipe
+     * @param recipe the RecipeData that should be extended
      * @param callBack  the Callback function that is called when the recipe has been fetched.
      */
-    void GetRecipeExtended(int recipeId, RecipeDataCallBack callBack);
+    void GetRecipeExtended(RecipeData recipe, RecipeDataCallBack callBack);
 
+
+    void GetRecipeExtended(int recipeId, RecipeDataCallBack callBack);
     /**
      * Saves the passed RecipeDataExtended to the database and the passed adapter.
      * Handles Insert as well as Update.
      * @param adapter the adapter the Recipe should also be saved to (with the correct id)
      * @param recipe the RecipeDataExtended to be saved.
      */
-    void saveRecipe(ArrayAdapter<Recipe> adapter, RecipeExtendedData recipe);
+    void saveRecipe(ArrayAdapter<RecipeData> adapter, RecipeExtendedData recipe);
+
+    void DeleteRecipe(ArrayAdapter<RecipeData> adapter, RecipeData recipe);
 }
 

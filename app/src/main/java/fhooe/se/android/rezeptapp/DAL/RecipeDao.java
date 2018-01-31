@@ -1,6 +1,7 @@
 package fhooe.se.android.rezeptapp.DAL;
 
 import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
@@ -28,6 +29,9 @@ public interface RecipeDao{
     @Insert (onConflict = REPLACE)
     public void InsertIngredients(List<Ingredient> ingredients);
 
+    @Delete
+    public void DeleteRecipe(Recipe recipe);
+
     @Update
     public void UpdateRecipe(Recipe recipe);
 
@@ -42,6 +46,5 @@ public interface RecipeDao{
 
     @Query("SELECT * FROM Recipe INNER JOIN Ingredient ON Recipe.id = Ingredient.recipeId WHERE recipeId = :recipeId")
     public List<Ingredient> GetIngredients(int recipeId);
-
 
 }

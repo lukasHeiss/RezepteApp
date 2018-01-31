@@ -26,6 +26,9 @@ public class RecipeExtendedData extends RecipeData {
 
     public RecipeExtendedData(Recipe other, List<String> instructions, List<IngredientData> ingredients) {
         super(other.id, other.recipeName, other.icon);
+        this.timePreparation = other.timePreparation;
+        this.timeCooking = other.timeCooking;
+        this.difficulty = other.difficulty;
         instructionList = instructions;
         this.ingredientList = ingredients;
         Log.e("whatev", "instr:" + instructions.size() + "ingr:" + ingredients.size());

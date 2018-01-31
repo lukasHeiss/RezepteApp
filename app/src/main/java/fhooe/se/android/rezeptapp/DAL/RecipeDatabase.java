@@ -32,6 +32,7 @@ class Recipe{
     public int timePreparation;
     public int timeCooking;
     public int basePortions;
+    public int difficulty;
 }
 
 @Entity (primaryKeys = {"recipeId", "id"},
