@@ -27,4 +27,10 @@ public class SplashActivity extends Activity {
         Intent i = new Intent(getApplicationContext(), ListActivity.class);
         startActivity(i);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        finish();
+    }
 }
