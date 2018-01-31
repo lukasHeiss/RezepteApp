@@ -32,12 +32,13 @@ public class ListActivity extends Activity implements View.OnClickListener, Adap
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
-        adapter = new RecipeDataAdapter(this, this);
+        //adapter = new RecipeDataAdapter(this, this);
+
         dataManager = DALFactory.GetDataManager();
-        dataManager.FillAdapter(adapter, this);
+        //dataManager.FillAdapter(adapter, this);
 
         ListView lv = (ListView)findViewById(R.id.activity_list_mainview);
-        lv.setAdapter(adapter);
+        lv.setAdapter(dataManager.GetAdapter(this, this, this));
         lv.setOnItemClickListener(this);
 
 
@@ -70,5 +71,13 @@ public class ListActivity extends Activity implements View.OnClickListener, Adap
         recipe.AddInstruction("Die Käsescheibe auf das Brot legen. Tadaaaa!");
         dataManager.saveRecipe(adapter, recipe);
         //Toast.makeText(this,"Properties has been selected", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        adapter = dataManager.GetAdapter(this,this, this);
+        ListView lv = (ListView)findViewById(R.id.activity_list_mainview);
+        lv.setAdapter(adapter);
     }
 }

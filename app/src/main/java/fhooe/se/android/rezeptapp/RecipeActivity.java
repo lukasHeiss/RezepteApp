@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.Toast;
 import android.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,9 +23,11 @@ import android.widget.TextView;
 
 
 import fhooe.se.android.rezeptapp.DAL.DALFactory;
+import fhooe.se.android.rezeptapp.DAL.DataManager;
 import fhooe.se.android.rezeptapp.DAL.IDataManager;
 import fhooe.se.android.rezeptapp.DAL.IngredientDataAdapter;
 import fhooe.se.android.rezeptapp.DAL.InstructionDataAdapter;
+import fhooe.se.android.rezeptapp.DAL.RecipeData;
 import fhooe.se.android.rezeptapp.DAL.RecipeExtendedData;
 
 public class RecipeActivity extends Activity implements RecipeDataCallBack{
@@ -49,6 +53,22 @@ public class RecipeActivity extends Activity implements RecipeDataCallBack{
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.recipemenu, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.menu_action_delete:
+                manager.DeleteRecipe(data);
+                finish();
+                return true;
+            case R.id.menu_action_edit:
+                Toast.makeText(this, "Edit clicked", Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     //helper function to create the Meta Views (Time, portions etc), to reduce double code.

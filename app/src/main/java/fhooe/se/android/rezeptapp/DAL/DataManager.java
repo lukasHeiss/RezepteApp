@@ -1,6 +1,7 @@
 package fhooe.se.android.rezeptapp.DAL;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Application;
 import android.arch.persistence.room.Room;
 import android.content.Context;
@@ -9,11 +10,13 @@ import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import fhooe.se.android.rezeptapp.ListActivity;
 import fhooe.se.android.rezeptapp.R;
 import fhooe.se.android.rezeptapp.RecipeDataCallBack;
 
@@ -74,6 +77,39 @@ public class DataManager extends Application implements IDataManager  {
                         adapter.notifyDataSetChanged();
             }
         }.execute();
+    }
+
+    public ArrayAdapter<RecipeData>GetAdapter(final Activity activity, Context context, View.OnClickListener listener){
+        final ArrayAdapter<RecipeData> adapter = new RecipeDataAdapter(context, listener);
+
+        if(_db == null)initDb(context);
+        final RecipeDao dao = _db.recipeDao();
+        Log.e("whatev" , "filladapter started");
+
+        new AsyncTask<Void, Void, Integer>() {
+            @Override
+            protected Integer doInBackground(Void... params) {
+                Log.e("whatev" , "filladapter running");
+
+                final List<RecipeData> list = new ArrayList<RecipeData>();
+                for(Recipe recipe : dao.LoadAllRecipes())
+                    list.add(new RecipeData(recipe));
+
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.addAll(list);
+                    }
+                });
+                return null;
+            }
+
+            @Override
+            protected void  onPostExecute(Integer bla){
+                adapter.notifyDataSetChanged();
+            }
+        }.execute();
+        return adapter;
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -191,7 +227,7 @@ public class DataManager extends Application implements IDataManager  {
 
     @SuppressLint("StaticFieldLeak")
     @Override
-    public void DeleteRecipe(final ArrayAdapter<RecipeData> adapter, final RecipeData recipe){
+    public void DeleteRecipe(final RecipeData recipe){
         final RecipeDao dao = _db.recipeDao();
 
         new AsyncTask<Void, Void, Void>() {
@@ -201,7 +237,7 @@ public class DataManager extends Application implements IDataManager  {
                 dbRecipe.id = recipe.getId();
                 dao.DeleteRecipe(dbRecipe);
 
-                adapter.remove(recipe);
+                //adapter.remove(recipe);
                 return null;
             }
         }.execute();

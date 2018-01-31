@@ -1,6 +1,8 @@
 package fhooe.se.android.rezeptapp.DAL;
 
+import android.app.Activity;
 import android.content.Context;
+import android.view.View;
 import android.widget.ArrayAdapter;
 
 import java.util.List;
@@ -20,6 +22,8 @@ public interface IDataManager {
      */
     void FillAdapter(ArrayAdapter<RecipeData> adapter, Context context);
 
+    ArrayAdapter<RecipeData>GetAdapter(Activity activity, Context context, View.OnClickListener listener);
+
     /**
      * Gets the entire RecipeDataExtended for a specified recipe.
      * implement RecipeDataCallBack and pass this as the callback to use this function correctly.
@@ -38,6 +42,6 @@ public interface IDataManager {
      */
     void saveRecipe(ArrayAdapter<RecipeData> adapter, RecipeExtendedData recipe);
 
-    void DeleteRecipe(ArrayAdapter<RecipeData> adapter, RecipeData recipe);
+    void DeleteRecipe(RecipeData recipe);
 }
 
