@@ -64,7 +64,6 @@ public class edit_recipe extends Activity implements View.OnClickListener {
         iv.setImageResource(image);
 
         TextView tv = (TextView) view.findViewById(R.id.activity_recipe_edit_meta_text);
-        tv.setText(data);
 
         return view;
     }
@@ -73,31 +72,28 @@ public class edit_recipe extends Activity implements View.OnClickListener {
     public void dataLoaded() {
 
             //add meta elements
-            LinearLayout metaElements = (LinearLayout) findViewById(R.id.activity_recipe_edit_metaList);
-            if(data.getTimeCooking() > 0)
-                metaElements.addView(getMetaElementView(String.valueOf(data.getTimeCooking()) + " m " + getResources().getString(R.string.cookTime), R.drawable.ic_clock));
-            if(data.getTimePreparation() > 0)
-                metaElements.addView(getMetaElementView(String.valueOf(data.getTimePreparation()) + " m " + getResources().getString(R.string.prepTime), R.drawable.ic_clock));
-            if(data.getDifficulty() > 0)
-                metaElements.addView(getMetaElementView(getResources().getString(data.getDifficulty()), R.drawable.ic_chef));
-            metaElements.addView(getMetaElementView(data.getBasePortions() + getResources().getString(R.string.servings), R.drawable.ic_cutlery));
+        LinearLayout metaElements = (LinearLayout) findViewById(R.id.activity_recipe_edit_metaList);
+        metaElements.addView(getMetaElementView(String.valueOf(data.getTimeCooking()) + " m " + getResources().getString(R.string.cookTime), R.drawable.ic_clock));
+        metaElements.addView(getMetaElementView(String.valueOf(data.getTimePreparation()) + " m " + getResources().getString(R.string.prepTime), R.drawable.ic_clock));
+        metaElements.addView(getMetaElementView(getResources().getString(data.getDifficulty()), R.drawable.ic_chef));
+        metaElements.addView(getMetaElementView(data.getBasePortions() + getResources().getString(R.string.servings), R.drawable.ic_cutlery));
 
 
-            //add the List of instructions
-            LinearLayout instructions = (LinearLayout) findViewById(R.id.activity_recipe_edit_instructionList);
-            ArrayAdapter instructionAdapter = new InstructionDataAdapter(this, null);
-            instructionAdapter.addAll(data.getInstructionList());
-            for(int i = 0; i < instructionAdapter.getCount(); i++){
-                instructions.addView(instructionAdapter.getView(i, null, instructions));
-            }
+        //add the List of instructions
+        LinearLayout instructions = (LinearLayout) findViewById(R.id.activity_recipe_edit_instructionList);
+        ArrayAdapter instructionAdapter = new InstructionDataAdapter(this, null);
+        instructionAdapter.add("");
+        for(int i = 0; i < instructionAdapter.getCount(); i++){
+            instructions.addView(instructionAdapter.getView(i, null, instructions));
+        }
 
-            //add the List of ingredients
-            LinearLayout ingredients = (LinearLayout) findViewById(R.id.activity_recipe_edit_ingredientList);
-            ArrayAdapter ingredientsAdapter = new IngredientDataAdapter(this, null);
-            ingredientsAdapter.addAll(data.getIngredientList());
-            for(int i = 0; i < ingredientsAdapter.getCount(); i++){
-                ingredients.addView(ingredientsAdapter.getView(i, null, ingredients));
-            }
+        //add the List of ingredients
+        LinearLayout ingredients = (LinearLayout) findViewById(R.id.activity_recipe_edit_ingredientList);
+        ArrayAdapter ingredientsAdapter = new IngredientDataAdapter(this, null);
+        ingredientsAdapter.add(new IngredientData(0, "", ""));
+        for(int i = 0; i < ingredientsAdapter.getCount(); i++){
+            ingredients.addView(ingredientsAdapter.getView(i, null, ingredients));
+        }
 
     }
 }
