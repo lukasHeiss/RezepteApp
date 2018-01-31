@@ -4,6 +4,9 @@ import android.content.Context;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.app.Activity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toolbar;
+
 
 import fhooe.se.android.rezeptapp.DAL.DALFactory;
 import fhooe.se.android.rezeptapp.DAL.IDataManager;
@@ -33,14 +36,19 @@ public class RecipeActivity extends Activity implements RecipeDataCallBack{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.activity_recipe_toolbar);
-        //setActionBar(toolbar);
 
         int recipeId = getIntent().getIntExtra("recipe", -1);
         Log.e(TAG, "recipe #" + recipeId + " selected");
 
         //get extended recipe. the callback function is called as soon as the recipe has been loaded.
         manager.GetRecipeExtended(recipeId, this);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.recipemenu, menu);
+        return true;
     }
 
     //helper function to create the Meta Views (Time, portions etc), to reduce double code.

@@ -5,13 +5,13 @@
         android:id="@+id/menu_action_edit"
         android:icon="@android:drawable/ic_menu_edit"
         android:title="edit"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="always"/>
 
     <item
         android:id="@+id/menu_action_delete"
         android:icon="@android:drawable/ic_menu_delete"
         android:title="delete"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="always"/>
 
 
 

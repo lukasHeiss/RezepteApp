@@ -8,19 +8,15 @@
     tools:context="fhooe.se.android.rezeptapp.RecipeActivity"
     android:orientation="vertical">
 
-    <android.widget.Toolbar
-        android:id="@+id/activity_recipe_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"/>
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="10dip">
+
+
 
         <ImageView
         android:id="@+id/activity_recipe_image"
