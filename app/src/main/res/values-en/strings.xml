@@ -3,6 +3,7 @@
     <string name="app_name">RecipeApp</string>
     <string name="title_activity_recipy">Recipe</string>
 
+    <string name="servings">servings</string>
     <string name="prepTime">Preparation Time</string>
     <string name="cookTime">Cooking Time</string>
 

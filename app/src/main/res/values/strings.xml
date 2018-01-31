@@ -2,8 +2,7 @@
     <string name="app_name">RezeptApp</string>
     <string name="title_activity_recipy">Rezept</string>
 
-    <string name="gram">g</string>
-    <string name="kilo">kg</string>
+    <string name="servings">Portionen</string>
     <string name="prepTime">Vorbereitungszeit</string>
     <string name="cookTime">Kochzeit</string>
 
