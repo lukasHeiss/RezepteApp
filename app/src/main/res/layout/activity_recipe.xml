@@ -45,8 +45,7 @@
         android:id="@+id/activity_recipe_ingredientList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dip"
-        android:background="#0f0"/>
+        android:layout_marginTop="10dip"/>
 
 
     <LinearLayout
@@ -54,8 +53,7 @@
         android:id="@+id/activity_recipe_instructionList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dip"
-        android:background="#0f0"/>
+        android:layout_marginTop="10dip"/>
 
     </LinearLayout>
 </ScrollView>
