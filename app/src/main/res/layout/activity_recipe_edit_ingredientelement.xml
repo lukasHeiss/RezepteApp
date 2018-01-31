@@ -39,14 +39,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="6"
-                android:text="10g" />
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:textSize="14sp" />
 
             <EditText
                 android:id="@+id/activity_recipe_edit_ingredientelement_text"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Zutat"
+                android:imeOptions="actionNext"
+                android:inputType="text"
                 android:textSize="14sp" />
 
         </LinearLayout>
